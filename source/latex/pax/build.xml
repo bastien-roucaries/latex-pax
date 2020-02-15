@@ -18,11 +18,12 @@
           depends="init"
           description="compile the source"
   >
-    <javac srcdir="${src}" destdir="${build}" target="1.4" source="1.4">
+    <javac srcdir="${src}" destdir="${build}">
       <classpath>
-        <!-- try with and without subdirectory `lib' -->
+            <pathelement location="/usr/share/java/pdfbox.jar" />
+        <!-- try with and without subdirectory `lib' 
         <pathelement location="${pdfbox.home}/lib/${pdfbox.name}"/>
-        <pathelement location="${pdfbox.home}/${pdfbox.name}"/>
+        <pathelement location="${pdfbox.home}/${pdfbox.name}"/> -->
       </classpath>
     </javac>
   </target>

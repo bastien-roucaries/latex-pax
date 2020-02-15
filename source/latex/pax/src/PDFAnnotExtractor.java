@@ -24,14 +24,14 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import org.pdfbox.cos.*;
-import org.pdfbox.pdfparser.*;
-import org.pdfbox.pdmodel.*;
-import org.pdfbox.pdmodel.common.*;
-import org.pdfbox.pdmodel.interactive.action.*;
-import org.pdfbox.pdmodel.interactive.action.type.*;
-import org.pdfbox.pdmodel.interactive.annotation.*;
-import org.pdfbox.pdmodel.interactive.documentnavigation.destination.*;
+import org.apache.pdfbox.cos.*;
+import org.apache.pdfbox.pdfparser.*;
+import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.common.*;
+import org.apache.pdfbox.pdmodel.interactive.action.*;
+import org.apache.pdfbox.pdmodel.interactive.action.type.*;
+import org.apache.pdfbox.pdmodel.interactive.annotation.*;
+import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.*;
 
 public class PDFAnnotExtractor implements Constants {
 

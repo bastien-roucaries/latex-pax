@@ -22,8 +22,8 @@ package pax;
 
 import java.io.*;
 import java.util.*;
-import org.pdfbox.cos.*;
-import org.pdfbox.exceptions.*;
+import org.apache.pdfbox.cos.*;
+import org.apache.pdfbox.exceptions.*;
 
 public class StringVisitor implements ICOSVisitor {
 
