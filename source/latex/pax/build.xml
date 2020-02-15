@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<project name="pax" default="dist" basedir=".">
+  <description>
+    Build file for PDFAnnotExtractor
+  </description>
+
+  <property name="src"   location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="."/>
+  <property name="pdfbox.home" location="${basedir}"/> <!-- or somewhere else -->
+  <property name="pdfbox.name" value="PDFBox-0.7.2.jar"/>
+
+  <target name="init">
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile"
+          depends="init"
+          description="compile the source"
+  >
+    <javac srcdir="${src}" destdir="${build}" target="1.4" source="1.4">
+      <classpath>
+        <!-- try with and without subdirectory `lib' -->
+        <pathelement location="${pdfbox.home}/lib/${pdfbox.name}"/>
+        <pathelement location="${pdfbox.home}/${pdfbox.name}"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="dist"
+          depends="compile"
+          description="generate the distribution"
+  >
+    <mkdir dir="${dist}"/>
+    <jar jarfile="${dist}/${ant.project.name}.jar"
+         manifest="${src}/MANIFEST.MF"
+         basedir="${build}"
+         includes="pax/**"
+    />
+  </target>
+
+  <target name="clean"
+          description="clean up"
+  >
+    <delete dir="${build}"/>
+    <delete file="${dist}/${ant.project.name}.jar"/>
+  </target>
+
+</project>

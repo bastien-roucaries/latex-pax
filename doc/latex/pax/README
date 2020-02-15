@@ -1,0 +1,247 @@
+README for project pax (PDFAnnotExtractor), 2012/04/23 v0.1l
+
+
+TABLE OF CONTENTS
+=================
+
+A. Project pax
+B. Copyright, License
+C. Files
+D. Author
+E. Requirements
+F. Download
+G. Installation
+H. Use
+I. History
+
+
+A. PROJECT PAX
+==============
+
+If PDF files are included using pdfTeX, PDF annotations
+are stripped. This project tries a solution without
+altering pdfTeX. A Java program (pax.jar) parses the PDF file that
+will later be included. It writes the data of the annotations
+in a file that can be read by TeX. Then a LaTeX package (pax.sty)
+extends the graphics package. If a PDF file is included, the package
+looks for the file with the annotation data, reads them and puts
+the annotations in the right place.
+
+Project status: experimental
+
+
+B. COPYRIGHT, LICENSE
+=====================
+
+Copyright (C) 2006-2008, 2011, 2012 Heiko Oberdiek.
+
+The project consists of two parts:
+* The Java program pax.jar with sources.
+  The Perl wrapper pdfannotextractor.pl.
+  License is GPL, see license/gpl.txt.
+* The LaTeX package pax.sty.
+  License is LPPL 1.3.
+The file README belongs to both parts.
+
+The Java program uses the PDF library PDFBox,
+see http://pdfbox.apache.org/.
+
+
+C. FILES
+========
+
+The project is available in CTAN (ftp.ctan.org):
+  CTAN:macros/latex/contrib/pax/
+
+There are the following files:
+* README
+    This file.
+* pax.tds.zip
+    The whole project, ready to unpack in a TDS (texmf) tree.
+
+The files inside pax.tds.zip:
+* doc/latex/pax/README
+    This file.
+* scripts/pax/pax.jar
+    The Java program.
+* scripts/pax/pdfannotextractor.pl
+    Perl wrapper for calling the Java program in pax.jar.
+* source/latex/pax/license/LaTeX/lppl.txt
+    License (LPPL) for the LaTeX package.
+* source/latex/pax/license/PDFAnnotExtractor/gpl.txt
+    License (GPL) for the Java program.
+* source/latex/pax/src/Constants.java
+  source/latex/pax/src/Entry.java
+  source/latex/pax/src/EntryWriteException.java
+  source/latex/pax/src/PDFAnnotExtractor.java
+  source/latex/pax/src/StringVisitor.java
+    Java source files.
+* source/latex/pax/src/MANIFEST.MF
+    Manifest file for the JAR file.
+* source/latex/pax/src/build.xml
+    Ant build file for generating the JAR file.
+* tex/latex/pax/pax.sty
+    The LaTeX package.
+
+
+D. AUTHOR
+=========
+
+Heiko Oberdiek <heiko.oberdiek at googlemail.com>
+
+
+E. REQUIREMENTS
+===============
+
+* Java 1.4+.
+* PDFBox 0.7.2 or 0.7.3.
+  However, PDFAnnotExtractor does not work with the recent
+  versions of PDFBox, currently only the older versions
+  0.7.2 or 0.7.3 are supported. The older versions are
+  available at SourceForge:
+    http://sourceforge.net/project/showfiles.php?group_id=78314
+* The Perl wrapper (optional) needs:
+  * Perl
+  * kpsewhich
+  * java in PATH
+  The option --install also requires:
+  * wget or curl
+  * unzip
+  * texhash or mktexlsr
+
+
+F. DOWNLOAD
+===========
+
+1. Download pax.tds.zip from CTAN:
+     ftp://ftp.ctan.org/tex-archive/install/macros/latex/contrib/pax-tds.zip
+
+2. Download PDFBox-0.7.3.jar from http://www.pdfbox.org/ (22 MB)
+     http://prdownloads.sourceforge.net/pdfbox/PDFBox-0.7.3.zip?download
+   Or install PDFBox as RPM package or whatever.
+
+
+G. INSTALLATION
+===============
+
+Examples are given for linux.
+
+3. Install PDFBox (from its home page, RPM package, ...).
+   The wrapper pdfannotextractor.pl looks for the JAR file in directories:
+      /usr/share/java/
+      /usr/local/share/java/
+      TDS:scripts/pax/lib/ (TDS:scripts//)
+   assuming one of the following names:
+     pdfbox.jar
+     PDFBox.jar
+     pdfbox-0.7.3.jar
+     PDFBox-0.7.3.jar
+     pdfbox-0.7.2.jar
+     PDFBox-0.7.2.jar
+
+Alternative for 2. and 3.
+   * Continue with 4. and 5.a).
+   * Call `pdfannotextractor --install' (or with option --debug).
+     It downloads PDFBox from its homepage and installs it
+     in TEXMFVAR(VARTEXMF) below TDS:scripts/pax/
+
+4. Unzip pax-tds.zip inside the TDS tree, where you want to put this
+   project, e.g.:
+     unzip pax-tds -d /usr/local/share/texmf
+   Don't forget to update the database (texhash, mktexlsr, ...).
+
+5.a) Install the wrapper Perl script pdfannotextractor.pl
+     as `pdfannotextractor' somewhere in your PATH (/usr/local/bin,
+     /usr/bin, ...).
+5.b) Or write a wrapper script or whatever to ease the call of the
+     Java program, e.g.:
+       #!/bin/sh
+       java -cp pax.jar:pdfbox.jar pax.PDFAnnotExtractor "$@"
+
+Version of PDFBox
+-----------------
+Developing the pax project I have used and tested version 0.7.2,
+also the current version 0.7.3 seems to be fine. Older versions
+are not supported at all, they may work or do not.
+
+
+H. USE
+======
+
+As example I am using usrguide.pdf (with links from project latex-tds)
+that will be included in test.tex:
+
+%%% cut %%% test.tex %%% cut %%%
+\documentclass[a4paper,12pt,landscape]{article}
+\usepackage[
+  hmargin=1in,
+  vmargin=1in,
+]{geometry}
+
+\usepackage{pdfpages}
+% pdfpages loads graphicx
+
+\usepackage{pax}
+
+\iffalse
+  \usepackage{hyperref}
+  \hypersetup{
+    filebordercolor={1 1 0},
+  }
+\fi
+
+\begin{document}
+  \includepdf[pages=-,nup=2x1]{usrguide}
+\end{document}
+%%% cut %%% test.tex %%% cut %%%
+
+First run the Java program on usrguide.pdf:
+
+  $ java -jar pax.jar usrguide.pdf
+
+It generates usrguide.pax.
+Next run pdflatex on test.tex twice at least:
+
+  $ pdflatex test
+  $ pdflatex test
+
+Then the links should work.
+
+Additionally package hyperref can be used (replace \iffase by \iftrue).
+Then the links can be configured using hyperref settings.
+(But keep in mind, the colored links by option colorlinks can't
+be changed in included documents.
+
+
+I. History
+==========
+
+2006/08/24 v0.1a
+  * First release.
+2006/09/04 v0.1b
+  * Bug fix in PDFAnnotExtractor.add_dest()/named destinations.
+2007/06/29 v0.1c
+  * \l@addto@macro renamed to \PAX@l@addto@macro to avoid
+    collision with classes of KOMA-Script.
+2007/06/30 v0.1d
+  * Use of package `etexmcds'.
+2007/07/12 v0.1e
+  * The Java program can be called with several files.
+2007/07/16 v0.1f
+  * PDF files are explicitely closed to avoid warnings.
+2007/07/18 v0.1g
+  * Compiled for Java 1.4.
+2007/07/19 v0.1h
+  * JAR file without TDS tree.
+2008/10/01 v0.1i
+  * Perl wrapper `pdfannotextractor.pl' added.
+  * Section `Installation' from README rewritten.
+  * Class-Path removed from MANIFEST.MF.
+2011/04/22 v0.1j
+  * Update of email address and updating version dates
+    for all files.
+2011/07/06 v0.1k
+  * Package `pax' uses package `kvsetkeys' to avoid
+    problems with incompatible `xkeyval'.
+2012/04/18 v0.1l
+  * Option --version added to pdfannotextractor.pl.
