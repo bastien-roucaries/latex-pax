@@ -179,37 +179,11 @@ sub find_jar_pdfbox () {
     }
 }
 
-sub find_jar_commons_logging () {
-    return if $path_jar_commons_logging;
-    foreach my $dir (@dir_jar) {
-        foreach my $jar (@jar_commons_logging) {
-            my $path = "$dir/$jar";
-            if (-f $path) {
-                $path_jar_commons_logging = $path;
-                debug $jar_commons_logging, $path_jar_commons_logging;
-                return;
-            }
-        }
-    }
-    foreach my $jar_commons_logging (@jar_commons_logging) {
-        $path_jar_pdfbox = find_jar $jar_commons_logging;
-        last if $path_jar_commons_logging;
-    }
-}
-
-
-
 
 sub launch_pax () {
     check_prg $prg_java, 1;
     my @cmd = ($prg_java);
-    my $sep = $is_win ? ';' : ':';
-    my $cp = "$path_jar_pax";
-    $cp .= "$sep$path_jar_pdfbox" if $path_jar_pdfbox;
-    $cp .= "$sep$classpath" if $classpath;
-    push @cmd, '-cp';
-    push @cmd, $cp;
-    push @cmd, $main_class;
+    push @cmd, $path_jar_pax;
     push @cmd, @ARGV;
     debug 'System', "@cmd";
     system @cmd;
