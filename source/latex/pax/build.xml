@@ -14,59 +14,57 @@
   </target>
 
   <target name="compile"
-          depends="init"
-          description="compile the source"
-  >
+	  depends="init"
+	  description="compile the source"
+	  >
     <javac srcdir="${src}" destdir="${build}">
       <classpath>
-        <pathelement location="${basedir}/lib/pdfbox.jar"/>
+	<pathelement location="${basedir}/lib/pdfbox.jar"/>
 	<pathelement location="${basedir}/lib/commons-logging.jar"/>
       </classpath>
     </javac>
   </target>
 
-<path id="build.classpath">
-  <fileset dir="${basedir}">
-     <include name="lib/*.jar"/>
-  </fileset>
-</path>
+  <path id="build.classpath">
+    <fileset dir="${basedir}">
+      <include name="lib/*.jar"/>
+    </fileset>
+  </path>
 
-<pathconvert property="manifest.classpath" pathsep=" ">
-  <path refid="build.classpath"/>
-  <mapper>
-    <chainedmapper>
-       <flattenmapper/>
-       <globmapper from="*.jar" to="lib/*.jar"/>
-    </chainedmapper>
-  </mapper>
-</pathconvert>
+  <pathconvert property="manifest.classpath" pathsep=" ">
+    <path refid="build.classpath"/>
+    <mapper>
+      <chainedmapper>
+	<flattenmapper/>
+	<globmapper from="*.jar" to="lib/*.jar"/>
+      </chainedmapper>
+    </mapper>
+  </pathconvert>
 
   <target name="dist"
-          depends="compile"
-          description="generate the distribution"
-  >
+	  depends="compile"
+	  description="generate the distribution"
+	  >
     <mkdir dir="${dist}"/>
     <mkdir dir="${dist}/lib"/>
     <copy todir="${dist}/lib" flatten="true">
-      <fileset dir="lib">    
-      <include name="*.jar" />    
-    </fileset>    
+      <fileset dir="lib">
+	<include name="*.jar" />
+      </fileset>
     </copy>
     <jar jarfile="${dist}/${ant.project.name}.jar"
-         manifest="${src}/MANIFEST.MF"
-
-         basedir="${build}"
-         includes="pax/**"
-    >
-	<manifest>
-    	    <attribute name="Class-Path" value="${manifest.classpath}" />
-        </manifest>
-   </jar>
+	 manifest="${src}/MANIFEST.MF"
+	 basedir="${build}"
+	 includes="pax/**" >
+      <manifest>
+	<attribute name="Class-Path" value="${manifest.classpath}" />
+      </manifest>
+    </jar>
   </target>
 
   <target name="clean"
-          description="clean up"
-  >
+	  description="clean up"
+	  >
     <delete dir="${build}"/>
     <delete dir="${dist}/lib"/>
     <delete file="${dist}/pax.jar" />
