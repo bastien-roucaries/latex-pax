@@ -161,29 +161,13 @@ sub find_jar_pax () {
     }
 }
 
-sub find_jar_pdfbox () {
-    return if $path_jar_pdfbox;
-    foreach my $dir (@dir_jar) {
-        foreach my $jar (@jar_pdfbox) {
-            my $path = "$dir/$jar";
-            if (-f $path) {
-                $path_jar_pdfbox = $path;
-                debug $jar_pdfbox, $path_jar_pdfbox;
-                return;
-            }
-        }
-    }
-    foreach my $jar_pdfbox (@jar_pdfbox) {
-        $path_jar_pdfbox = find_jar $jar_pdfbox;
-        last if $path_jar_pdfbox;
-    }
-}
-
 
 sub launch_pax () {
     check_prg $prg_java, 1;
     my @cmd = ($prg_java);
+    push @cmd, '-cp';
     push @cmd, $path_jar_pax;
+    push @cmd, 'pax.PDFAnnotExtractor';
     push @cmd, @ARGV;
     debug 'System', "@cmd";
     system @cmd;
@@ -207,14 +191,6 @@ sub launch_pax () {
 
 my $ret = 0;
 find_jar_pax;
-if ($pdfbox_in_classpath) {
-    debug 'PDFBox in CLASSPATH', 'yes';
-}
-else {
-    find_jar_pdfbox;
-    $path_jar_pdfbox or die "$error Cannot find $pdfbox library!\n"
-            . "See README and option `--install'.\n";
-}
 exit launch_pax;
 
 __END__
