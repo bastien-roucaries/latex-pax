@@ -245,3 +245,6 @@ I. History
     problems with incompatible `xkeyval'.
 2012/04/18 v0.1l
   * Option --version added to pdfannotextractor.pl.
+2020/04/06 v0.2
+  * Port to recent pdfanotator
+  * New developper Bastien Roucariès <rouca !at! debian.org>
