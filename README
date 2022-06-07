@@ -1,5 +1,4 @@
-README for project pax (PDFAnnotExtractor), 2012/04/23 v0.1l
-
+README for project pax (PDFAnnotExtractor)
 
 TABLE OF CONTENTS
 =================
@@ -245,6 +244,6 @@ I. History
     problems with incompatible `xkeyval'.
 2012/04/18 v0.1l
   * Option --version added to pdfannotextractor.pl.
-2020/04/06 v0.2
+2022/06/07 v0.2
   * Port to recent pdfanotator
   * New developper Bastien Roucariès <rouca !at! debian.org>
